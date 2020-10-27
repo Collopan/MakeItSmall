@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Resultado";
+}
+@model MakeItSmall.Models.URLModel
+
+<div class="text-center">
+    </br>
+    <h1 class="display-4">texto agradecendo</h1>
+    </br>
+    </br>
+    <p>
+        <div class="form-group">
+            <label>SEU LINK</label>
+        </div>
+    </p>
+
+    <form asp-action="Index" method="post">
+        <label id="OutputURL">www.MakeTtSmall.com/@Model.SMALL_URL</label>
+        <br \>
+        <button type="submit" class="btn btn-primary">VOLTAR</button>
+    </form>
+</div>

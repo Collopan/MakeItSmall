@@ -1,0 +1,35 @@
+﻿@{
+
+    ViewData["Title"] = "Home Page";
+
+}
+
+@model MakeItSmall.Models.URLModel
+
+
+
+<div class="text-center">
+    </br>
+    <h1 class="display-4">texto pra botar o link</h1>
+    </br>
+    </br>
+    <form asp-action="Result" method="post">
+        <p>
+            <label for="InputURL">URL</label>
+            <br \>
+            <input type="text" id="InputURL" size=100 asp-for="BIG_URL" required>
+        </p>
+
+        <p>
+            <label for="NameURL">Nome Desejado</label>
+            <br \>
+            <input id="NameURL" size=100 asp-for="SMALL_URL" required>
+        </p>
+
+        <button type="submit" class="btn btn-primary">START</button>
+    </form>
+    <form asp-action="Teste" method="Post">
+        <button type="submit"> TESTE </button>
+    </form>
+
+</div>
