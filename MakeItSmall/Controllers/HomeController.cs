@@ -8,35 +8,36 @@ using Microsoft.Extensions.Logging;
 using MakeItSmall.Models;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MakeItSmall.Controllers
 {
 
     public class HomeController : Controller
     {
-       
-
-        private readonly ILogger<HomeController> _logger;
-        private readonly IConfiguration _configuration;
-
-        public HomeController(ILogger<HomeController> logger, IConfiguration config)
-        {
-            _logger = logger;
-            _configuration = config;
-
-        }
+        
 
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Result(URLModel urlm)
+        public IActionResult Result(URLModel urlm)        
         {
+            List<string> lst = CheckSMALL();
 
-            string connStr = _configuration.GetConnectionString("MyConnString");
-            SqlConnection conn = new SqlConnection(connStr);
+            foreach(string lista in lst)
+            {
+                if(lista == urlm.SMALL_URL)
+                {
+                    ModelState.AddModelError("Error", "URL Personalizada já existe.");
+                    return View("Index");
+                }
+            }
+
+            SqlConnection conn = new SqlConnection("Server=DESKTOP-28DDBR5\\SQLEXPRESS;Database=MakeItSmall;User Id=renan;Password=24025564;");
             conn.Open();
+
 
             string query = "INSERT INTO [dbo].[URL_STORE]([BIG_URL],[SMALL_URL])VALUES(@BIG_URL, @SMALL_URL)";
             SqlCommand cmd = new SqlCommand(query, conn);
@@ -52,20 +53,31 @@ namespace MakeItSmall.Controllers
             return View(urlm);  
         }
         
-        public IActionResult Teste()
+        public List<string> CheckSMALL()
         {
 
-            string final = "http://www.google.com.br";
-            return Redirect(final);
+            List<string> lst = new List<string>();
 
-           
+            SqlConnection conn = new SqlConnection("Server=DESKTOP-28DDBR5\\SQLEXPRESS;Database=MakeItSmall;User Id=renan;Password=24025564;");
+            conn.Open();
+
+            SqlCommand cmdRead = new SqlCommand("SELECT [SMALL_URL] FROM [dbo].[URL_STORE]", conn);
+            SqlDataReader reader = cmdRead.ExecuteReader();
+
+            while (reader.Read())
+            {
+                lst.Add(Convert.ToString(reader["SMALL_URL"]));
+            }                     
+
+            conn.Close();
+
+            return lst;            
         }
-        public IActionResult Redirection(string tempURL)
-        {
-            Response.Redirect(tempURL);
-            return View();
-        }
+
+        
+        
     }
+    
     
 
 }

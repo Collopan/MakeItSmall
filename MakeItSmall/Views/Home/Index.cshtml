@@ -23,13 +23,21 @@
         <p>
             <label for="NameURL">Nome Desejado</label>
             <br \>
-            <input id="NameURL" size=100 asp-for="SMALL_URL" required>
+            <input id="NameURL" size=100 asp-for="SMALL_URL" onkeypress="return event.charCode != 32" required>
         </p>
 
         <button type="submit" class="btn btn-primary">START</button>
     </form>
-    <form asp-action="Teste" method="Post">
-        <button type="submit"> TESTE </button>
-    </form>
-
 </div>
+
+<p>
+
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+    {
+        <div class="alert alert-danger" role="alert" size=10>
+           <strong>Error!</strong> @ViewData.ModelState["Error"].Errors.First().ErrorMessage
+        </div>
+    }
+</p>
+
+

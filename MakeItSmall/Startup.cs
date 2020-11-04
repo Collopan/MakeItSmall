@@ -28,9 +28,6 @@ namespace MakeItSmall
 {
     public class Startup
     {
-        private readonly ILogger<HomeController> _logger;
-
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -66,48 +63,24 @@ namespace MakeItSmall
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/{url_return}", async context =>
-                {
-                    var url_return = context.Request.RouteValues["url_return"];
-                    SqlConnection conn = null;
-                    SqlDataReader reader = null;
-
-                    string connStr = Configuration.GetConnectionString("MyConnString");
-                    conn = new SqlConnection(connStr);
-                    conn.Open();
-
-                    SqlCommand cmd = new SqlCommand("SELECT [BIG_URL] FROM [dbo].[URL_STORE] WHERE [SMALL_URL] = @URL_RETURN", conn);
-
-                    SqlParameter param = new SqlParameter();
-                    param.ParameterName = "@URL_RETURN";
-                    param.Value = url_return;
-
-                    cmd.Parameters.Add(param);
-
-                    reader = cmd.ExecuteReader();
-
-                    while(reader.Read()){
-
-
-                        RedirectionController rc = new RedirectionController();
-                        rc.Redirection(String.Format("{0}", reader[0]));
-
-                    }
-                    reader.Close();
-                    conn.Close();      
-
-                });
-            });
-
-            app.UseEndpoints(endpoints =>
-            {
-
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
-        }
 
-        
+                endpoints.MapGet("/{url_return}", async context =>
+                {
+                    await Task.Run(() =>
+                    {
+
+                        string url_return = (string)context.Request.RouteValues["url_return"];
+                        string yourUrl = Utils.Redirection(url_return);
+                        context.Response.Redirect(yourUrl);
+
+                    }).ConfigureAwait(true);
+                });
+            });
+
+
+        }
     }
 }
