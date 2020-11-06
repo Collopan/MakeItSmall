@@ -11,7 +11,5 @@ namespace MakeItSmall.Models
     {        
         public String BIG_URL { get; set; }
         public String SMALL_URL { get; set; }
-
-        public String URL_RESULT { get; set; }
     }
 }

@@ -12,11 +12,8 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace MakeItSmall.Controllers
 {
-
     public class HomeController : Controller
     {
-        
-
         public IActionResult Index()
         {
             return View();
@@ -50,7 +47,10 @@ namespace MakeItSmall.Controllers
             
             conn.Close();
 
-            return View(urlm);  
+            string temp = "mkur.link/" + urlm.SMALL_URL;
+
+             ModelState.AddModelError("Error", temp);
+            return View("Index");
         }
         
         public List<string> CheckSMALL()

@@ -1,43 +1,74 @@
 ﻿@{
 
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Make it Small";
 
 }
 
 @model MakeItSmall.Models.URLModel
 
+<img class="figure-img img-fluid rounded" src="../img/makeyourlink.png" alt="Make Your Link Logo">
+<br \>
+<br \>
+<br \>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
-<div class="text-center">
-    </br>
-    <h1 class="display-4">texto pra botar o link</h1>
-    </br>
-    </br>
+<t2 class="w3-container">
     <form asp-action="Result" method="post">
-        <p>
-            <label for="InputURL">URL</label>
-            <br \>
-            <input type="text" id="InputURL" size=100 asp-for="BIG_URL" required>
-        </p>
+        <div class="ALLURLDIV">
+            <div class="text-center">
+                <img src="../img/url2.png" class="imagemURL" alt="URL">
+                <br \>
+                <input type="url" class="InputClass" id="InputURL" asp-for="BIG_URL" required placeholder="https://www.youtube.com/watch?v=tkzY_VwNIek">
+            </div>
 
-        <p>
-            <label for="NameURL">Nome Desejado</label>
-            <br \>
-            <input id="NameURL" size=100 asp-for="SMALL_URL" onkeypress="return event.charCode != 32" required>
-        </p>
+            <img src="../img/mkurTESTE.png" class="imagemM" alt="mkur.link/">
+            <input id="NameURL" class="NameURLClass" size=20 asp-for="SMALL_URL" onkeypress="return event.charCode != 32" required placeholder="OceanMan">
 
-        <button type="submit" class="btn btn-primary">START</button>
-    </form>
-</div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">MAKE IT SMALLER</button>
+            </div>
 
-<p>
-
-    @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
-    {
-        <div class="alert alert-danger" role="alert" size=10>
-           <strong>Error!</strong> @ViewData.ModelState["Error"].Errors.First().ErrorMessage
         </div>
-    }
-</p>
+    </form>
+    <br \>
+
+    <h6 class="text-right">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+        {
+            @if (@ViewData.ModelState["Error"].Errors.First().ErrorMessage == "URL Personalizada já existe.")
+            {
+                <div class="alert alert-danger" role="alert">
+                    <strong>@ViewData.ModelState["Error"].Errors.First().ErrorMessage</strong>
+                    <script>
+                        document.getElementById("NameURL").style.borderColor = "red";
+                    </script>
+                </div>
+            }
+            else
+            {
+                <br \>
+                <h2 class="text-center">
+                    <div class="OutputURL">
+                        <a href="@ViewData.ModelState["Error"].Errors.First().ErrorMessage" name="myLink" id="myLink">@ViewData.ModelState["Error"].Errors.First().ErrorMessage</a>
+                        <br \>
+                        <button onclick="CopyToClipBoard()" class="btn btn-primary">COPY</button>
+                    </div>
+                </h2>                
+            }
+        }
+    </h6>
+    
+    <script>
+        $(document).ready(function () {
+            $(".NameURLClass").click(function () {
+                document.getElementById("NameURL").style.borderColor = "black";
+                $("h6").fadeOut(2000);
+            });
+        });
+    </script>
+
+    </div>
+
+
 
 
